@@ -1,0 +1,177 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleName {
+  ADMIN
+  PHARMACIST
+  STAFF
+  CUSTOMER
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PACKED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+model Role {
+  id          Int     @id @default(autoincrement())
+  name        RoleName @unique
+  description String?
+  users       User[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  password    String
+  name        String?
+  phone       String?
+  role        Role?    @relation(fields: [roleId], references: [id])
+  roleId      Int?
+  isVerified  Boolean  @default(false)
+  deletedAt   DateTime?
+  orders      Order[]
+  prescriptions Prescription[]
+  auditLogs   AuditLog[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([deletedAt])
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  slug      String    @unique
+  medicines Medicine[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  @@index([slug])
+}
+
+model Supplier {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String?
+  phone       String?
+  contactInfo String?
+  purchases   Inventory[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+}
+
+model Medicine {
+  id          Int        @id @default(autoincrement())
+  name        String
+  slug        String     @unique
+  description String?
+  sku         String?
+  barcode     String?
+  unit        String?    // e.g., tablet, ml
+  price       Float
+  category    Category?  @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
+  inventories Inventory[]
+  orderItems  OrderItem[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  deletedAt   DateTime?
+  @@index([slug])
+}
+
+model Inventory {
+  id          Int      @id @default(autoincrement())
+  medicine    Medicine @relation(fields: [medicineId], references: [id])
+  medicineId  Int
+  supplier    Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId  Int?
+  batchNumber String?
+  quantity    Int      @default(0)
+  unitPrice   Float
+  expiryDate  DateTime?
+  receivedAt  DateTime @default(now())
+  deletedAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([batchNumber])
+  @@index([expiryDate])
+}
+
+model Order {
+  id          Int        @id @default(autoincrement())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int
+  total       Float
+  status      OrderStatus @default(PENDING)
+  items       OrderItem[]
+  prescription Prescription?
+  payment     Payment?
+  note        String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    Int
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+  medicineId Int
+  quantity   Int
+  price      Float
+}
+
+model Prescription {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  order      Order?   @relation(fields: [orderId], references: [id])
+  orderId    Int?     @unique
+  filePath   String
+  verified   Boolean  @default(false)
+  uploadedAt DateTime @default(now())
+}
+
+model Payment {
+  id            Int           @id @default(autoincrement())
+  order         Order         @relation(fields: [orderId], references: [id])
+  orderId       Int           @unique
+  amount        Float
+  status        PaymentStatus @default(PENDING)
+  provider      String?
+  transactionId String?
+  metadata      Json?
+  createdAt     DateTime      @default(now())
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  action    String
+  tableName String?
+  recordId  Int?
+  changes   Json?
+  ip        String?
+  createdAt DateTime @default(now())
+}
+// Removed duplicate generator/datasource and duplicate models (kept the first schema block above)
