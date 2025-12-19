@@ -1,260 +1,202 @@
-# 🏥 Pharmacy Management & E-Commerce Platform
+# 🏥 MediCare - Complete Pharmacy Management & E-Commerce Platform
 
-A comprehensive, production-ready pharmacy management system built with Next.js, featuring both administrative tools and customer e-commerce functionality.
+A comprehensive, full-stack pharmacy management system built with Next.js 16, featuring both customer-facing e-commerce capabilities and complete administrative management tools.
 
-## 🚀 Features
+## ✨ Features
 
-### 🏪 Public E-Commerce
-- **Modern Landing Page** - SEO-optimized with trust indicators
-- **Product Catalog** - Search, filter, and browse medicines
-- **Shopping Cart** - Add to cart, quantity management
-- **Secure Checkout** - Order placement and tracking
-- **User Authentication** - Registration and login system
+### 🛒 **Customer E-Commerce Platform**
+- **Modern Landing Page** - Professional design with hero section, features, and testimonials
+- **Product Catalog** - Browse medicines by category with advanced filtering and search
+- **Shopping Cart** - Add to cart, quantity management, and secure checkout
+- **Order Management** - Track order status from pending to delivered
+- **Prescription Upload** - Upload and manage prescriptions with verification system
+- **User Profiles** - Manage personal information and view order history
+- **Dark/Light Theme** - System preference detection with manual toggle
+- **Mobile Responsive** - Optimized for all devices with slide-in navigation
 
-### 👨‍⚕️ Pharmacy Management (Admin)
-- **Medicine Management** - CRUD operations for medicines and categories
-- **Inventory Tracking** - Stock levels, batch numbers, expiry dates
-- **Order Processing** - Order status management (Pending → Paid → Packed → Delivered)
-- **User Management** - Role-based access control (Admin, Pharmacist, Staff, Customer)
-- **Reports & Analytics** - Sales summaries, stock alerts, expiry tracking
-- **Audit Logging** - Complete activity tracking for compliance
+### 🔐 **Authentication & Security**
+- **Role-Based Access** - Admin, Pharmacist, Staff, and Customer roles
+- **Secure Authentication** - NextAuth.js with credential-based login
+- **Password Management** - Change password and forgot password functionality
+- **Account Verification** - Email verification system
+- **Session Management** - Secure session handling and automatic logout
 
-### 🔐 Security & Compliance
-- **Role-Based Authorization** - Secure access control
-- **Input Validation** - Zod schemas for data integrity
-- **Audit Trails** - Complete activity logging
-- **Secure Authentication** - NextAuth with JWT tokens
-- **Health Data Ready** - Designed for compliance requirements
+### 👨‍💼 **Admin Management System**
+- **Dashboard Analytics** - Real-time metrics, revenue tracking, and key performance indicators
+- **Medicine Management** - Complete CRUD operations with inventory tracking
+- **Inventory Control** - Batch tracking, expiration monitoring, and stock alerts
+- **Order Processing** - Status management (Pending → Paid → Packed → Delivered → Rejected)
+- **User Management** - Role assignment, account control, and user verification
+- **Prescription Verification** - Review and approve customer prescriptions
+- **Reports & Analytics** - Business intelligence and performance metrics
+- **Audit Logging** - Complete action tracking for compliance
 
-## 🛠️ Tech Stack
+### 📊 **Smart Notifications & Alerts**
+- **Low Stock Alerts** - Configurable minimum stock thresholds
+- **Expiration Warnings** - 30-day advance notifications for expiring medicines
+- **Real-time Updates** - Live dashboard updates and notifications
+- **Status Tracking** - Order and prescription status changes
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Database:** PostgreSQL with Prisma ORM
-- **Authentication:** NextAuth.js (Credentials + JWT)
-- **Styling:** Tailwind CSS
-- **State Management:** React Context + Server Actions
-- **Deployment:** Docker + Docker Compose
+## 🛠️ Technology Stack
 
-## 📋 Prerequisites
+### **Frontend**
+- **Next.js 16** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **Radix UI** - Accessible component primitives
+- **Lucide React** - Beautiful icons
+- **Sonner** - Toast notifications
 
-- Node.js 18+ 
-- PostgreSQL 13+ (or Docker)
-- npm or yarn
+### **Backend**
+- **Next.js API Routes** - Serverless API endpoints
+- **NextAuth.js** - Authentication and session management
+- **Prisma ORM** - Type-safe database operations
+- **PostgreSQL** - Robust relational database
+- **Server Actions** - Modern server-side operations
+
+### **Database Schema**
+- **11 Interconnected Models** - Users, Roles, Medicines, Categories, Inventory, Orders, Prescriptions, Suppliers, Audit Logs
+- **Soft Deletes** - Data preservation with logical deletion
+- **Comprehensive Relationships** - Foreign keys and proper indexing
+- **Audit Trail** - Complete action logging for compliance
 
 ## 🚀 Quick Start
 
-### Option 1: Docker (Recommended)
+### Prerequisites
+- Node.js 18+ 
+- PostgreSQL database
+- npm or yarn
 
-1. **Clone and setup environment:**
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/pharmacy-platform.git
+   cd pharmacy-platform
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment setup**
+   ```bash
+   cp .env.example .env
+   ```
+   Update `.env` with your database credentials and NextAuth secret.
+
+4. **Database setup**
+   ```bash
+   npm run setup
+   ```
+   This will generate Prisma client, run migrations, and seed the database.
+
+5. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+Visit `http://localhost:3000` to see the application.
+
+## 🔑 Demo Accounts
+
+The system comes with pre-seeded demo accounts:
+
+| Role | Email | Password | Access Level |
+|------|-------|----------|--------------|
+| **Admin** | admin@pharmacy.com | password123 | Full system access |
+| **Pharmacist** | pharmacist@pharmacy.com | password123 | Medicine & prescription management |
+| **Staff** | staff@pharmacy.com | password123 | Order & inventory management |
+| **Customer** | customer@pharmacy.com | password123 | Shopping & prescriptions |
+
+## 📱 Key Pages & Features
+
+### **Public Pages**
+- `/` - Landing page with features and testimonials
+- `/shop/catalog` - Product catalog with filtering
+- `/shop/product/[slug]` - Individual product pages
+- `/shop/cart` - Shopping cart and checkout
+
+### **Customer Dashboard**
+- `/dashboard` - Customer overview and recent orders
+- `/profile` - Profile management and settings
+- `/prescriptions` - Upload and manage prescriptions
+- `/shop/orders` - Order history and tracking
+
+### **Admin Panel**
+- `/admin/dashboard` - Analytics and key metrics
+- `/admin/medicines` - Medicine CRUD and stock management
+- `/admin/inventory` - Batch tracking and expiration monitoring
+- `/admin/orders` - Order processing and status management
+- `/admin/users` - User management and role assignment
+- `/admin/prescriptions` - Prescription verification system
+- `/admin/reports` - Business analytics and reports
+
+## 🎨 Design Features
+
+- **Modern UI/UX** - Clean, professional design with intuitive navigation
+- **Dark Mode Support** - System preference detection with manual toggle
+- **Responsive Design** - Mobile-first approach with adaptive layouts
+- **Accessibility** - WCAG compliant with proper ARIA labels
+- **Loading States** - Skeleton loaders and progress indicators
+- **Error Handling** - Graceful error messages and fallbacks
+
+## 🔧 Development
+
+### **Available Scripts**
 ```bash
-git clone <repository-url>
-cd pharmacy-platform
-cp .env.example .env
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run prisma:studio # Open Prisma Studio
+npm run prisma:seed  # Seed database with demo data
 ```
 
-2. **Start with Docker Compose:**
+### **Database Operations**
 ```bash
-# Development (database only)
-docker-compose -f docker-compose.dev.yml up -d
-
-# Or full production setup
-docker-compose up -d
+npm run prisma:generate  # Generate Prisma client
+npm run prisma:migrate   # Run database migrations
+npm run prisma:seed      # Seed with demo data
 ```
 
-3. **Setup database (if using dev compose):**
-```bash
-npm install
-npm run prisma:generate
-npm run prisma:migrate
-npm run prisma:seed
-npm run dev
-```
+## 📦 Deployment
 
-### Option 2: Local Development
-
-1. **Clone and install:**
-```bash
-git clone <repository-url>
-cd pharmacy-platform
-npm install
-```
-
-2. **Environment setup:**
-```bash
-cp .env.example .env
-# Edit .env with your database credentials
-```
-
-3. **Database setup:**
-```bash
-# Generate Prisma client
-npm run prisma:generate
-
-# Run migrations
-npm run prisma:migrate
-
-# Seed with sample data
-npm run prisma:seed
-```
-
-4. **Start development server:**
-```bash
-npm run dev
-```
-
-Visit [http://localhost:3000](http://localhost:3000)
-
-## 👤 Test Accounts
-
-After seeding, you can login with:
-
-| Role | Email | Password | Access |
-|------|-------|----------|---------|
-| **Admin** | admin@pharmacy.com | admin123 | Full system access |
-| **Pharmacist** | pharmacist@pharmacy.com | admin123 | Medicine & order management |
-| **Customer** | customer@example.com | admin123 | Shopping and orders |
-
-## 📁 Project Structure
-
-```
-pharmacy-platform/
-├── app/                    # Next.js App Router
-│   ├── (admin)/           # Admin dashboard routes
-│   ├── (auth)/            # Authentication pages
-│   ├── (public)/          # Public pages
-│   ├── (shop)/            # E-commerce pages
-│   └── api/               # API routes
-├── components/            # Reusable UI components
-├── lib/                   # Utilities and configurations
-├── actions/               # Server Actions
-├── prisma/                # Database schema and migrations
-├── types/                 # TypeScript type definitions
-└── public/                # Static assets
-```
-
-## 🗃️ Database Schema
-
-Key entities:
-- **Users** - Authentication and role management
-- **Medicines** - Product catalog with categories
-- **Inventory** - Stock tracking with batches and expiry
-- **Orders** - Customer orders with status flow
-- **Audit Logs** - Activity tracking for compliance
-
-## 🔧 Available Scripts
-
+### **Docker Support**
 ```bash
 # Development
-npm run dev              # Start development server
-npm run build           # Build for production
-npm run start           # Start production server
+npm run docker:dev
 
-# Database
-npm run prisma:generate # Generate Prisma client
-npm run prisma:migrate  # Run database migrations
-npm run prisma:seed     # Seed with sample data
-npm run setup           # Generate + seed (first time setup)
-
-# Code Quality
-npm run lint            # Run ESLint
+# Production
+npm run docker:prod
 ```
 
-## 🐳 Docker Deployment
-
-### Development
-```bash
-# Start PostgreSQL only
-docker-compose -f docker-compose.dev.yml up -d
-```
-
-### Production
-```bash
-# Build and start all services
-docker-compose up -d --build
-
-# View logs
-docker-compose logs -f app
-```
-
-## 🌍 Environment Variables
-
-Copy `.env.example` to `.env` and configure:
-
-```env
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/pharmacy_db
-
-# NextAuth
-NEXTAUTH_SECRET=your_secret_here
-NEXTAUTH_URL=http://localhost:3000
-
-# Optional: Stripe, SMTP, etc.
-```
-
-## 🔐 Security Features
-
-- **Authentication:** Secure login with bcrypt password hashing
-- **Authorization:** Role-based route protection
-- **Input Validation:** Zod schemas for all forms
-- **Audit Logging:** Complete activity tracking
-- **SQL Injection Protection:** Prisma ORM with parameterized queries
-- **XSS Protection:** React's built-in escaping
-
-## 📊 Key Features Implemented
-
-✅ **Complete Authentication System**  
-✅ **Role-Based Access Control**  
-✅ **Medicine & Category Management**  
-✅ **Inventory Tracking with Batches**  
-✅ **Order Management System**  
-✅ **Shopping Cart & Checkout**  
-✅ **Admin Dashboard with Analytics**  
-✅ **Audit Logging System**  
-✅ **Responsive UI Design**  
-✅ **Docker Deployment Ready**  
-
-## 🚧 Production Considerations
-
-Before deploying to production:
-
-1. **Security:**
-   - Change all default passwords
-   - Use strong NEXTAUTH_SECRET
-   - Enable HTTPS
-   - Configure CORS properly
-
-2. **Database:**
-   - Use managed PostgreSQL service
-   - Set up regular backups
-   - Configure connection pooling
-
-3. **Monitoring:**
-   - Add error tracking (Sentry)
-   - Set up logging aggregation
-   - Monitor database performance
-
-4. **Compliance:**
-   - Review audit logging requirements
-   - Implement data retention policies
-   - Add prescription verification workflows
+### **Environment Variables**
+Required environment variables for production:
+- `DATABASE_URL` - PostgreSQL connection string
+- `NEXTAUTH_SECRET` - NextAuth.js secret key
+- `NEXTAUTH_URL` - Application URL
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## 🙏 Acknowledgments
 
-For issues and questions:
-1. Check the existing issues
-2. Create a new issue with detailed description
-3. Include error logs and environment details
+- Built with [Next.js](https://nextjs.org/)
+- UI components from [Radix UI](https://www.radix-ui.com/)
+- Icons by [Lucide](https://lucide.dev/)
+- Styled with [Tailwind CSS](https://tailwindcss.com/)
 
+---
+
+**MediCare** - Revolutionizing pharmacy management with modern technology 💊✨

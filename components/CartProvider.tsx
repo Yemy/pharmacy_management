@@ -7,6 +7,7 @@ type CartContextValue = {
   items: CartItem[]
   add: (item: CartItem) => void
   remove: (medicineId: number) => void
+  updateQuantity: (medicineId: number, quantity: number) => void
   clear: () => void
 }
 
@@ -45,10 +46,28 @@ export default function CartProvider({ children }: { children: React.ReactNode }
   }
 
   const remove = (medicineId: number) => setItems((prev) => prev.filter((p) => p.medicineId !== medicineId))
+  
+  const updateQuantity = (medicineId: number, quantity: number) => {
+    if (quantity <= 0) {
+      remove(medicineId)
+      return
+    }
+    
+    setItems((prev) => {
+      const idx = prev.findIndex((p) => p.medicineId === medicineId)
+      if (idx >= 0) {
+        const copy = [...prev]
+        copy[idx].quantity = quantity
+        return copy
+      }
+      return [...prev, { medicineId, quantity }]
+    })
+  }
+  
   const clear = () => setItems([])
 
   return (
-    <CartContext.Provider value={{ items, add, remove, clear }}>
+    <CartContext.Provider value={{ items, add, remove, updateQuantity, clear }}>
       {children}
     </CartContext.Provider>
   )

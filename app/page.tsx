@@ -44,25 +44,25 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-6">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Pill className="w-8 h-8 text-blue-600" />
+              <div className="bg-blue-100 dark:bg-blue-900/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Pill className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Prescription Medicines</h3>
-              <p className="text-gray-600">Licensed dispensing of prescription medications with proper verification</p>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Prescription Medicines</h3>
+              <p className="text-gray-600 dark:text-gray-300">Licensed dispensing of prescription medications with proper verification</p>
             </div>
             <div className="text-center p-6">
-              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-8 h-8 text-green-600" />
+              <div className="bg-green-100 dark:bg-green-900/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Health Consultation</h3>
-              <p className="text-gray-600">Expert advice from qualified pharmacists for your health concerns</p>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Health Consultation</h3>
+              <p className="text-gray-600 dark:text-gray-300">Expert advice from qualified pharmacists for your health concerns</p>
             </div>
             <div className="text-center p-6">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Truck className="w-8 h-8 text-purple-600" />
+              <div className="bg-purple-100 dark:bg-purple-900/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Truck className="w-8 h-8 text-purple-600 dark:text-purple-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Home Delivery</h3>
-              <p className="text-gray-600">Fast and secure delivery of medicines to your doorstep</p>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Home Delivery</h3>
+              <p className="text-gray-600 dark:text-gray-300">Fast and secure delivery of medicines to your doorstep</p>
             </div>
           </div>
         </div>
@@ -77,24 +77,24 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
-              <h3 className="font-semibold mb-2">Browse & Search</h3>
-              <p className="text-gray-600 text-sm">Find medicines by name, category, or health condition</p>
+              <div className="bg-blue-600 dark:bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">Browse & Search</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Find medicines by name, category, or health condition</p>
             </div>
             <div className="text-center">
-              <div className="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
-              <h3 className="font-semibold mb-2">Upload Prescription</h3>
-              <p className="text-gray-600 text-sm">Upload prescription for prescription medicines</p>
+              <div className="bg-blue-600 dark:bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">Upload Prescription</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Upload prescription for prescription medicines</p>
             </div>
             <div className="text-center">
-              <div className="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
-              <h3 className="font-semibold mb-2">Secure Payment</h3>
-              <p className="text-gray-600 text-sm">Pay securely using multiple payment options</p>
+              <div className="bg-blue-600 dark:bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">Secure Payment</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Pay securely using multiple payment options</p>
             </div>
             <div className="text-center">
-              <div className="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
-              <h3 className="font-semibold mb-2">Fast Delivery</h3>
-              <p className="text-gray-600 text-sm">Get medicines delivered within 24 hours</p>
+              <div className="bg-blue-600 dark:bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
+              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">Fast Delivery</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Get medicines delivered within 24 hours</p>
             </div>
           </div>
         </div>
@@ -138,19 +138,19 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <Shield className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Licensed & Certified</h3>
-              <p className="text-gray-600">Fully licensed pharmacy with certified pharmacists</p>
+              <Shield className="w-12 h-12 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Licensed & Certified</h3>
+              <p className="text-gray-600 dark:text-gray-300">Fully licensed pharmacy with certified pharmacists</p>
             </div>
             <div className="text-center">
-              <Star className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Quality Assured</h3>
-              <p className="text-gray-600">100% genuine medicines from authorized distributors</p>
+              <Star className="w-12 h-12 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Quality Assured</h3>
+              <p className="text-gray-600 dark:text-gray-300">100% genuine medicines from authorized distributors</p>
             </div>
             <div className="text-center">
-              <Clock className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">24/7 Support</h3>
-              <p className="text-gray-600">Round-the-clock customer support and consultation</p>
+              <Clock className="w-12 h-12 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">24/7 Support</h3>
+              <p className="text-gray-600 dark:text-gray-300">Round-the-clock customer support and consultation</p>
             </div>
           </div>
         </div>

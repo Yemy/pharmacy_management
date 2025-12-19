@@ -26,6 +26,6 @@ if (!stripeSecret) {
   // In production you'd throw or log properly
 }
 
-const stripe = new Stripe(stripeSecret, { apiVersion: '2022-11-15' });
+const stripe = new Stripe(stripeSecret, { apiVersion: '2025-12-15.clover' });
 
 export default stripe;

@@ -17,10 +17,14 @@ export const registerSchema = z.object({
 export const medicineSchema = z.object({
   name: z.string().min(1, "Medicine name is required"),
   description: z.string().optional(),
+  usage: z.string().optional(),
+  dosage: z.string().optional(),
+  sideEffects: z.string().optional(),
   sku: z.string().optional(),
   barcode: z.string().optional(),
   unit: z.string().optional(),
   price: z.number().positive("Price must be positive"),
+  minStock: z.number().int().min(0, "Minimum stock must be non-negative").default(10),
   categoryId: z.number().optional(),
 });
 

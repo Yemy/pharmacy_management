@@ -80,7 +80,7 @@ export default function CheckoutClient() {
         note: note || undefined,
       });
 
-      if (result.success) {
+      if (result.success && result.data) {
         clear();
         router.push(`/shop/orders/${result.data.id}`);
       } else {

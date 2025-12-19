@@ -5,6 +5,7 @@ import CartProvider from '@/components/CartProvider'
 import NavBar from '@/components/NavBar'
 import Providers from './providers'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { Toaster } from 'sonner'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
             <CartProvider>
               <NavBar />
               {children}
+              <Toaster richColors position="top-right" />
             </CartProvider>
           </Providers>
         </ThemeProvider>

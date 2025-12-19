@@ -20,6 +20,7 @@ enum OrderStatus {
   PACKED
   DELIVERED
   CANCELLED
+  REJECTED
 }
 
 enum PaymentStatus {
@@ -47,10 +48,14 @@ model User {
   role        Role?    @relation(fields: [roleId], references: [id])
   roleId      Int?
   isVerified  Boolean  @default(false)
+  resetToken  String?
+  resetTokenExpiry DateTime?
   deletedAt   DateTime?
   orders      Order[]
   prescriptions Prescription[]
   auditLogs   AuditLog[]
+  customer    Customer?
+  employee    Employee?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   @@index([deletedAt])
@@ -74,6 +79,7 @@ model Supplier {
   phone       String?
   contactInfo String?
   purchases   Inventory[]
+  purchaseOrders PurchaseOrder[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   deletedAt   DateTime?
@@ -84,14 +90,21 @@ model Medicine {
   name        String
   slug        String     @unique
   description String?
+  usage       String?    // What the medicine is used for
+  dosage      String?    // Dosage instructions
+  sideEffects String?    // Side effects information
   sku         String?
   barcode     String?
   unit        String?    // e.g., tablet, ml
   price       Float
+  minStock    Int        @default(10) // Minimum stock alert level
   category    Category?  @relation(fields: [categoryId], references: [id])
   categoryId  Int?
   inventories Inventory[]
   orderItems  OrderItem[]
+  saleItems   SaleItem[]
+  purchaseOrderItems PurchaseOrderItem[]
+  controlledSubstance ControlledSubstance?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   deletedAt   DateTime?
@@ -174,4 +187,285 @@ model AuditLog {
   ip        String?
   createdAt DateTime @default(now())
 }
-// Removed duplicate generator/datasource and duplicate models (kept the first schema block above)
+
+// Point of Sale (POS) System for Physical Store
+enum SaleType {
+  ONLINE
+  PHYSICAL
+  PHONE
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  INSURANCE
+  MOBILE_PAYMENT
+  CHECK
+}
+
+model Sale {
+  id            Int           @id @default(autoincrement())
+  saleNumber    String        @unique // Auto-generated sale number
+  type          SaleType      @default(PHYSICAL)
+  customer      Customer?     @relation(fields: [customerId], references: [id])
+  customerId    Int?
+  employee      Employee?     @relation(fields: [employeeId], references: [id])
+  employeeId    Int?
+  subtotal      Float
+  tax           Float         @default(0)
+  discount      Float         @default(0)
+  total         Float
+  paymentMethod PaymentMethod
+  paymentRef    String?       // Reference number for card/insurance payments
+  items         SaleItem[]
+  insurance     InsuranceClaim?
+  commissions   Commission[]
+  controlledSubstanceLogs ControlledSubstanceLog[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  @@index([saleNumber])
+  @@index([createdAt])
+}
+
+model SaleItem {
+  id         Int      @id @default(autoincrement())
+  sale       Sale     @relation(fields: [saleId], references: [id])
+  saleId     Int
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+  medicineId Int
+  quantity   Int
+  unitPrice  Float
+  discount   Float    @default(0)
+  total      Float
+}
+
+// Customer Management (Enhanced)
+model Customer {
+  id            Int      @id @default(autoincrement())
+  user          User?    @relation(fields: [userId], references: [id])
+  userId        Int?     @unique
+  firstName     String
+  lastName      String
+  email         String?
+  phone         String?
+  dateOfBirth   DateTime?
+  address       String?
+  city          String?
+  state         String?
+  zipCode       String?
+  insuranceInfo Json?    // Store insurance details
+  allergies     String?  // Medical allergies
+  loyaltyPoints Int      @default(0)
+  totalSpent    Float    @default(0)
+  sales         Sale[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  deletedAt     DateTime?
+  @@index([email])
+  @@index([phone])
+}
+
+// Employee Management
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
+  TERMINATED
+}
+
+model Employee {
+  id            Int            @id @default(autoincrement())
+  user          User           @relation(fields: [userId], references: [id])
+  userId        Int            @unique
+  employeeId    String         @unique // Company employee ID
+  firstName     String
+  lastName      String
+  position      String
+  department    String?
+  hireDate      DateTime
+  salary        Float?
+  hourlyRate    Float?
+  status        EmployeeStatus @default(ACTIVE)
+  licenseNumber String?        // Pharmacist license
+  licenseExpiry DateTime?
+  address       String?
+  emergencyContact Json?       // Emergency contact info
+  sales         Sale[]
+  shifts        Shift[]
+  commissions   Commission[]
+  purchaseOrders PurchaseOrder[]
+  controlledSubstanceLogs ControlledSubstanceLog[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  deletedAt     DateTime?
+  @@index([employeeId])
+}
+
+// Shift Management
+model Shift {
+  id         Int      @id @default(autoincrement())
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId Int
+  date       DateTime
+  startTime  DateTime
+  endTime    DateTime?
+  breakTime  Int?     // Break time in minutes
+  hoursWorked Float?
+  overtime   Float?   @default(0)
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@index([date])
+}
+
+// Commission Tracking
+model Commission {
+  id         Int      @id @default(autoincrement())
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId Int
+  sale       Sale?    @relation(fields: [saleId], references: [id])
+  saleId     Int?
+  amount     Float
+  percentage Float
+  period     String   // e.g., "2024-01"
+  paidAt     DateTime?
+  createdAt  DateTime @default(now())
+  @@index([period])
+}
+
+// Enhanced Supplier Management
+model PurchaseOrder {
+  id           Int                @id @default(autoincrement())
+  orderNumber  String             @unique
+  supplier     Supplier           @relation(fields: [supplierId], references: [id])
+  supplierId   Int
+  employee     Employee?          @relation(fields: [employeeId], references: [id])
+  employeeId   Int?
+  status       PurchaseOrderStatus @default(PENDING)
+  subtotal     Float
+  tax          Float              @default(0)
+  shipping     Float              @default(0)
+  total        Float
+  orderDate    DateTime           @default(now())
+  expectedDate DateTime?
+  receivedDate DateTime?
+  items        PurchaseOrderItem[]
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  @@index([orderNumber])
+}
+
+enum PurchaseOrderStatus {
+  PENDING
+  ORDERED
+  PARTIAL_RECEIVED
+  RECEIVED
+  CANCELLED
+}
+
+model PurchaseOrderItem {
+  id              Int           @id @default(autoincrement())
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  purchaseOrderId Int
+  medicine        Medicine      @relation(fields: [medicineId], references: [id])
+  medicineId      Int
+  quantityOrdered Int
+  quantityReceived Int          @default(0)
+  unitCost        Float
+  total           Float
+}
+
+// Insurance & Claims Management
+enum ClaimStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PARTIAL
+}
+
+model InsuranceProvider {
+  id          Int              @id @default(autoincrement())
+  name        String
+  code        String           @unique
+  phone       String?
+  email       String?
+  address     String?
+  claims      InsuranceClaim[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model InsuranceClaim {
+  id                Int               @id @default(autoincrement())
+  claimNumber       String            @unique
+  sale              Sale              @relation(fields: [saleId], references: [id])
+  saleId            Int               @unique
+  provider          InsuranceProvider @relation(fields: [providerId], references: [id])
+  providerId        Int
+  patientId         String            // Insurance member ID
+  prescriptionNumber String?
+  claimAmount       Float
+  approvedAmount    Float?
+  copay             Float             @default(0)
+  deductible        Float             @default(0)
+  status            ClaimStatus       @default(PENDING)
+  submittedAt       DateTime          @default(now())
+  processedAt       DateTime?
+  notes             String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  @@index([claimNumber])
+}
+
+// Regulatory Compliance (DEA, Controlled Substances)
+enum ControlledSubstanceSchedule {
+  SCHEDULE_I
+  SCHEDULE_II
+  SCHEDULE_III
+  SCHEDULE_IV
+  SCHEDULE_V
+  NON_CONTROLLED
+}
+
+model ControlledSubstance {
+  id          Int                        @id @default(autoincrement())
+  medicine    Medicine                   @relation(fields: [medicineId], references: [id])
+  medicineId  Int                        @unique
+  deaNumber   String
+  schedule    ControlledSubstanceSchedule
+  restrictions String?
+  logs        ControlledSubstanceLog[]
+  createdAt   DateTime                   @default(now())
+  updatedAt   DateTime                   @updatedAt
+}
+
+model ControlledSubstanceLog {
+  id                    Int                 @id @default(autoincrement())
+  controlledSubstance   ControlledSubstance @relation(fields: [controlledSubstanceId], references: [id])
+  controlledSubstanceId Int
+  action                String              // DISPENSED, RECEIVED, DESTROYED, etc.
+  quantity              Int
+  employee              Employee?           @relation(fields: [employeeId], references: [id])
+  employeeId            Int?
+  sale                  Sale?               @relation(fields: [saleId], references: [id])
+  saleId                Int?
+  notes                 String?
+  createdAt             DateTime            @default(now())
+}
+
+// Financial Management
+model DailySalesReport {
+  id              Int      @id @default(autoincrement())
+  date            DateTime @unique
+  totalSales      Float
+  totalTransactions Int
+  cashSales       Float
+  cardSales       Float
+  insuranceSales  Float
+  totalTax        Float
+  totalDiscount   Float
+  netSales        Float
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@index([date])
+}
+

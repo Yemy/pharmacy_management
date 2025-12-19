@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const id = Number(params.id)
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id: idParam } = await params;
+  const id = Number(idParam)
   if (Number.isNaN(id)) return NextResponse.json({ error: 'Invalid id' }, { status: 400 })
 
   const med = await prisma.medicine.findUnique({

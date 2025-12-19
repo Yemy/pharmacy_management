@@ -196,6 +196,26 @@ export default function MobileNav() {
                   <Package className="w-5 h-5" />
                   <span>My Orders</span>
                 </Link>
+
+                <Link
+                  href="/prescriptions"
+                  onClick={closeNav}
+                  className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span>Prescriptions</span>
+                </Link>
+
+                <Link
+                  href="/profile"
+                  onClick={closeNav}
+                  className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <User className="w-5 h-5" />
+                  <span>Profile</span>
+                </Link>
               </div>
             ) : (
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">

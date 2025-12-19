@@ -69,7 +69,7 @@ export async function updateMedicine(id: number, data: Partial<MedicineInput>) {
     }
 
     // Update slug if name is being changed
-    const updateData = { ...data };
+    const updateData: any = { ...data };
     if (data.name) {
       updateData.slug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     }
@@ -180,6 +180,143 @@ export async function createCategory(data: CategoryInput) {
     return { 
       success: false, 
       error: error instanceof Error ? error.message : "Failed to create category" 
+    };
+  }
+}
+
+export async function getExpiringMedicines(daysAhead: number = 30) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    const userRole = (session.user as any).role;
+    if (!['ADMIN', 'PHARMACIST', 'STAFF'].includes(userRole)) {
+      throw new Error("Insufficient permissions");
+    }
+
+    const expiryThreshold = new Date();
+    expiryThreshold.setDate(expiryThreshold.getDate() + daysAhead);
+
+    const expiringInventory = await prisma.inventory.findMany({
+      where: {
+        expiryDate: {
+          lte: expiryThreshold,
+          gte: new Date(), // Not already expired
+        },
+        quantity: { gt: 0 },
+        deletedAt: null,
+      },
+      include: {
+        medicine: {
+          include: { category: true }
+        },
+        supplier: true,
+      },
+      orderBy: { expiryDate: 'asc' },
+    });
+
+    return { success: true, data: expiringInventory };
+  } catch (error) {
+    console.error("Get expiring medicines error:", error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "Failed to get expiring medicines" 
+    };
+  }
+}
+
+export async function getExpiredMedicines() {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    const userRole = (session.user as any).role;
+    if (!['ADMIN', 'PHARMACIST', 'STAFF'].includes(userRole)) {
+      throw new Error("Insufficient permissions");
+    }
+
+    const expiredInventory = await prisma.inventory.findMany({
+      where: {
+        expiryDate: {
+          lt: new Date(),
+        },
+        quantity: { gt: 0 },
+        deletedAt: null,
+      },
+      include: {
+        medicine: {
+          include: { category: true }
+        },
+        supplier: true,
+      },
+      orderBy: { expiryDate: 'desc' },
+    });
+
+    return { success: true, data: expiredInventory };
+  } catch (error) {
+    console.error("Get expired medicines error:", error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "Failed to get expired medicines" 
+    };
+  }
+}
+
+export async function getLowStockMedicines() {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    const userRole = (session.user as any).role;
+    if (!['ADMIN', 'PHARMACIST', 'STAFF'].includes(userRole)) {
+      throw new Error("Insufficient permissions");
+    }
+
+    // Get all medicines with their inventories
+    const medicines = await prisma.medicine.findMany({
+      where: {
+        deletedAt: null,
+      },
+      include: {
+        category: true,
+        inventories: {
+          where: {
+            deletedAt: null,
+          },
+        },
+      },
+    });
+
+    // Calculate low stock medicines
+    const lowStockMedicines = medicines.filter(medicine => {
+      // Calculate total stock from all inventories (including zero quantity ones)
+      const totalStock = medicine.inventories.reduce((sum, inv) => sum + inv.quantity, 0);
+      
+      // A medicine is low stock if total stock is less than or equal to minStock
+      // This includes medicines with 0 stock
+      return totalStock <= medicine.minStock;
+    }).map(medicine => {
+      const currentStock = medicine.inventories.reduce((sum, inv) => sum + inv.quantity, 0);
+      return {
+        ...medicine,
+        currentStock,
+      };
+    });
+
+    console.log(`Low stock check: Found ${lowStockMedicines.length} medicines below minimum stock`);
+    
+    return { success: true, data: lowStockMedicines };
+  } catch (error) {
+    console.error("Get low stock medicines error:", error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "Failed to get low stock medicines" 
     };
   }
 }

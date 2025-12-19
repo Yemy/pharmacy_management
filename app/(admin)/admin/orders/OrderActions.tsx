@@ -23,11 +23,12 @@ interface Order {
 }
 
 const statusFlow = {
-  [OrderStatus.PENDING]: [OrderStatus.PAID, OrderStatus.CANCELLED],
+  [OrderStatus.PENDING]: [OrderStatus.PAID, OrderStatus.CANCELLED, OrderStatus.REJECTED],
   [OrderStatus.PAID]: [OrderStatus.PACKED, OrderStatus.CANCELLED],
   [OrderStatus.PACKED]: [OrderStatus.DELIVERED],
   [OrderStatus.DELIVERED]: [],
   [OrderStatus.CANCELLED]: [],
+  [OrderStatus.REJECTED]: [],
 };
 
 export default function OrderActions({ order }: { order: Order }) {
