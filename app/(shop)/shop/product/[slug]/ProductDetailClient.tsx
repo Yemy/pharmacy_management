@@ -39,7 +39,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       <div className="mb-6">
         <Link
           href="/shop/catalog"
-          className="flex items-center text-blue-600 hover:text-blue-800 mb-4"
+          className="flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mb-4 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Catalog
@@ -48,8 +48,8 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Product Image */}
-        <div className="bg-white rounded-lg shadow-sm border p-8">
-          <div className="bg-gray-100 h-96 rounded-lg flex items-center justify-center">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-8">
+          <div className="bg-gray-100 dark:bg-gray-700 h-96 rounded-lg flex items-center justify-center">
             <span className="text-8xl">💊</span>
           </div>
         </div>
@@ -58,35 +58,35 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         <div className="space-y-6">
           <div>
             {product.category && (
-              <p className="text-sm text-blue-600 font-medium mb-2">
+              <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-2">
                 {product.category.name}
               </p>
             )}
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
               {product.name}
             </h1>
             {product.description && (
-              <p className="text-gray-600 text-lg leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
                 {product.description}
               </p>
             )}
           </div>
 
           {/* Product Details */}
-          <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-2 border border-gray-200 dark:border-gray-700">
             <div className="flex justify-between">
-              <span className="text-gray-600">SKU:</span>
-              <span className="font-medium">{product.sku || 'N/A'}</span>
+              <span className="text-gray-600 dark:text-gray-400">SKU:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{product.sku || 'N/A'}</span>
             </div>
             {product.unit && (
               <div className="flex justify-between">
-                <span className="text-gray-600">Unit:</span>
-                <span className="font-medium">{product.unit}</span>
+                <span className="text-gray-600 dark:text-gray-400">Unit:</span>
+                <span className="font-medium text-gray-900 dark:text-white">{product.unit}</span>
               </div>
             )}
             <div className="flex justify-between">
-              <span className="text-gray-600">Availability:</span>
-              <span className={`font-medium ${inStock ? 'text-green-600' : 'text-red-600'}`}>
+              <span className="text-gray-600 dark:text-gray-400">Availability:</span>
+              <span className={`font-medium ${inStock ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                 {inStock ? `${product.totalStock} in stock` : 'Out of stock'}
               </span>
             </div>
