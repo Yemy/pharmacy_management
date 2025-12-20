@@ -97,7 +97,7 @@ export default function CheckoutClient() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
       </div>
     );
   }
@@ -105,7 +105,7 @@ export default function CheckoutClient() {
   if (orderItems.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600">No items to checkout</p>
+        <p className="text-gray-600 dark:text-gray-400">No items to checkout</p>
       </div>
     );
   }
@@ -114,23 +114,23 @@ export default function CheckoutClient() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Order Details */}
       <div className="space-y-6">
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-xl font-semibold mb-4">Order Items</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Order Items</h2>
           <div className="space-y-4">
             {orderItems.map((item) => (
               <div key={item.medicineId} className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="bg-gray-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                  <div className="bg-gray-100 dark:bg-gray-700 w-12 h-12 rounded-lg flex items-center justify-center">
                     <span className="text-lg">💊</span>
                   </div>
                   <div>
-                    <h3 className="font-medium">{item.medicine!.name}</h3>
-                    <p className="text-sm text-gray-500">
+                    <h3 className="font-medium text-gray-900 dark:text-white">{item.medicine!.name}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       ${item.price.toFixed(2)} × {item.quantity}
                     </p>
                   </div>
                 </div>
-                <p className="font-semibold">
+                <p className="font-semibold text-gray-900 dark:text-white">
                   ${(item.price * item.quantity).toFixed(2)}
                 </p>
               </div>
@@ -138,13 +138,13 @@ export default function CheckoutClient() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-xl font-semibold mb-4">Order Notes</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Order Notes</h2>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Any special instructions or notes..."
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             rows={3}
           />
         </div>
@@ -152,41 +152,41 @@ export default function CheckoutClient() {
 
       {/* Order Summary & Payment */}
       <div className="space-y-6">
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Order Summary</h2>
           <div className="space-y-2 mb-4">
-            <div className="flex justify-between">
+            <div className="flex justify-between text-gray-900 dark:text-white">
               <span>Subtotal</span>
               <span>${total.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between text-gray-900 dark:text-white">
               <span>Shipping</span>
               <span>Free</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between text-gray-900 dark:text-white">
               <span>Tax</span>
               <span>$0.00</span>
             </div>
-            <hr />
-            <div className="flex justify-between font-semibold text-lg">
+            <hr className="border-gray-200 dark:border-gray-600" />
+            <div className="flex justify-between font-semibold text-lg text-gray-900 dark:text-white">
               <span>Total</span>
               <span>${total.toFixed(2)}</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-xl font-semibold mb-4">Customer Information</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Customer Information</h2>
           <div className="space-y-2 text-sm">
-            <p><strong>Name:</strong> {session?.user?.name}</p>
-            <p><strong>Email:</strong> {session?.user?.email}</p>
+            <p className="text-gray-900 dark:text-white"><strong>Name:</strong> {session?.user?.name}</p>
+            <p className="text-gray-900 dark:text-white"><strong>Email:</strong> {session?.user?.email}</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-            <p className="text-yellow-800 text-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Payment Method</h2>
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-4">
+            <p className="text-yellow-800 dark:text-yellow-200 text-sm">
               <strong>Demo Mode:</strong> This is a demonstration. No actual payment will be processed.
             </p>
           </div>
@@ -194,7 +194,7 @@ export default function CheckoutClient() {
           <button
             onClick={handleSubmitOrder}
             disabled={submitting}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-blue-600 dark:bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {submitting ? 'Processing...' : `Place Order - $${total.toFixed(2)}`}
           </button>
